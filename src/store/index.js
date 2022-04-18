@@ -1,12 +1,19 @@
-import Vue from "vue";
-import Vuex from "vuex";
+import Vue from 'vue'
+import Vuex from 'vuex'
+import { SET_MENU_TOGGLE } from './types'
 
-Vue.use(Vuex);
+Vue.use(Vuex)
 
 export default new Vuex.Store({
-  state: {},
+  state: {
+    sideMenuShow: false
+  },
   getters: {},
-  mutations: {},
+  mutations: {
+    [SET_MENU_TOGGLE](state, payload) {
+      state.sideMenuShow = payload
+    }
+  },
   actions: {},
-  modules: {},
-});
+  modules: {}
+})
