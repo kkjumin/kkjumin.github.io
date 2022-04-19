@@ -3,7 +3,7 @@
     <!-- 툴바 -->
     <v-toolbar elevation="4">
       <v-app-bar-nav-icon @click="setMenuToggle"></v-app-bar-nav-icon>
-      <h1 style="margin: 0 auto">Jumin's Profile</h1>
+      <h1 style="margin: 0 auto"></h1>
     </v-toolbar>
   </header>
 </template>
