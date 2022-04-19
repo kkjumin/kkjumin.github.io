@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>AboutMe</h1>
-    <div>asdasdasd</div>
+    <div>asdasdasd2</div>
   </div>
 </template>
 
