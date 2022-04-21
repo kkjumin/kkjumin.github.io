@@ -56,17 +56,18 @@ export default {
     myInfo: {
       name: '이주민',
       birth: '1990.06.04',
-      email: 'kkjumin@gail.com',
+      email: 'kkjumin@gmail.com',
       cellPhone: '010-6865-5196'
     },
     menuList: [
-      { title: 'Home', icon: 'mdi-view-dashboard', path: 'home' },
-      { title: 'About', icon: 'mdi-forum', path: 'aboutMe' }
+      // { title: '홈', icon: 'mdi-view-dashboard', path: 'home' },
+      { title: '영화검색', icon: 'mdi-movie', path: 'movieSearch' }
     ]
   }),
   computed: {
     ...mapState({
-      sideMenuShow: (state) => state.sideMenuShow
+      sideMenuShow: (state) => state.sideMenuShow,
+      isLoading: (state) => state.isLoading
     }),
     toggle: {
       get() {

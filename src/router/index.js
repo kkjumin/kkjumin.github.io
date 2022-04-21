@@ -8,12 +8,13 @@ const routes = [
     path: '/',
     name: 'home',
     component: () => import('../views/HomeView.vue'),
-    meta: { depth01: 'Home', depth02: '', depth03: '' }
+    meta: { depth01: 'Home', depth02: '', depth03: '' },
+    redirect: { name: 'movieSearch' }
   },
   {
-    path: '/aboutMe',
-    name: 'aboutMe',
-    component: () => import('../views/AboutMe.vue'),
+    path: '/movieSearch',
+    name: 'movieSearch',
+    component: () => import('../views/MovieSearch.vue'),
     meta: { depth01: 'AboutMe', depth02: '', depth03: '' }
   }
 ]
