@@ -25,6 +25,7 @@ import {
   SET_NATION_CODE
 } from '@/store/types'
 import { mapActions, mapMutations, mapState } from 'vuex'
+import moment from 'moment'
 export default {
   data() {
     return {
@@ -52,6 +53,11 @@ export default {
       set(val) {
         this.setNationCode(val)
       }
+    },
+    statisticsDate() {
+      let date = new Date()
+      date.setDate(date.getDate() - 1)
+      return moment(date).format('YYYYMMDD')
     }
   },
   methods: {
@@ -68,7 +74,7 @@ export default {
   },
   watch: {
     nationCodeInfo() {
-      this.dispatchTodayBoxOffice()
+      this.dispatchTodayBoxOffice({ targetDt: this.statisticsDate })
     }
   }
 }
