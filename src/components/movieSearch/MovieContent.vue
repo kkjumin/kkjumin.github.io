@@ -22,7 +22,7 @@
     <v-card-text>
       <v-row align="center" class="mx-0">
         <v-rating
-          :value="starToFixed(movie.userRating)"
+          :value="starToFixed(movie.userRating) / 2"
           color="amber"
           dense
           half-increments
@@ -46,8 +46,8 @@ export default {
   computed: {
     starToFixed() {
       return (starVal) => {
-        let halfVal = parseFloat(starVal) / 2
-        return parseFloat(halfVal.toFixed(1))
+        let star = parseFloat(starVal)
+        return parseFloat(star.toFixed(1))
       }
     },
     noImage() {
