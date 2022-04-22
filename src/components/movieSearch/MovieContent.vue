@@ -30,7 +30,7 @@
           size="10"
         ></v-rating>
 
-        <div class="grey--text ms-4">{{ starToFixed(movie.userRating) }}</div>
+        <div class="grey--text ms-1">{{ starToFixed(movie.userRating) }}</div>
       </v-row>
 
       <div class="my-4 text-subtitle-1 ell" style="font-size: 0.9rem !important; height: 60px">
