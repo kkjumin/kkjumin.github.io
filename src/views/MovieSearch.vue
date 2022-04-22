@@ -1,6 +1,7 @@
 <template>
   <div>
     <section>
+      <!-- 검색영역 -->
       <div class="searchArea">
         <input
           v-model="keyword"
@@ -12,6 +13,7 @@
         />
         <button class="searchBtn" @click="searchAction()">검색</button>
       </div>
+      <!-- 검색영역 end -->
 
       <!-- 최근검색어 -->
       <div v-if="focus" class="recentKeywordArea" v-click-outside="outSideClick">
@@ -33,12 +35,16 @@
           </v-list-item-group>
         </v-list>
       </div>
+      <!-- 최근검색어 end -->
 
+      <!-- 박스오피스 컴포넌트 -->
       <template v-if="!routeKeywordParams">
         <the-box-office @keyword-search="clickRecentKeyword" />
       </template>
+      <!-- 박스오피스 컴포넌트 end-->
 
       <template v-if="routeKeywordParams">
+        <!-- 검색 후 장르버튼 -->
         <div v-if="!isMobile" class="genreArea">
           <div class="genreButton" v-for="genre in genreList" :key="genre.key">
             <v-btn :color="activeGenre(genre.key)" elevation="2" @click="clickGenre(genre.key)">{{
@@ -46,6 +52,21 @@
             }}</v-btn>
           </div>
         </div>
+        <!-- 검색 후 장르버튼 end -->
+
+        <!-- 모바일 전용 장르 셀렉트박스-->
+        <div v-if="isMobile" class="genreArea">
+          <v-select
+            :items="genreList"
+            item-text="desc"
+            item-value="key"
+            label="장르"
+            solo
+            v-model="selectedGenre"
+            @change="clickGenre(selectedGenre)"
+          ></v-select>
+        </div>
+        <!-- 모바일 전용 장르 셀렉트박스 end-->
 
         <!-- 영화 리스트 -->
         <div class="movieListArea">
@@ -127,7 +148,9 @@
             </v-row>
           </v-container>
         </div>
+        <!-- 영화 리스트 end -->
 
+        <!-- 페이지네이션 -->
         <div class="text-center">
           <v-pagination
             v-model="page"
@@ -137,6 +160,7 @@
             @input="paging"
           ></v-pagination>
         </div>
+        <!-- 페이지네이션 end-->
       </template>
     </section>
   </div>
@@ -280,6 +304,7 @@ export default {
       }
     },
     clickRecentKeyword(keyword) {
+      this.facetClear()
       this.focus = false
       this.keyword = keyword
       this.searchAction()
@@ -320,6 +345,11 @@ export default {
     },
     outSideClick() {
       this.focus = false
+    },
+    facetClear() {
+      sessionStorage.removeItem('page')
+      sessionStorage.removeItem('genre')
+      sessionStorage.removeItem('start')
     }
   }
 }

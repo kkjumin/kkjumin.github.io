@@ -1,8 +1,8 @@
 <template>
   <div class="boxOfficeArea">
-    <v-row no-gutters style="height: 150px">
+    <v-row>
       <!-- 오늘의 박스오피스 -->
-      <v-col style="margin: 20px">
+      <v-col style="margin: 20px 0 0 0">
         <v-card class="mx-auto" max-width="400" tile>
           <v-list rounded>
             <v-subheader
@@ -18,9 +18,12 @@
               <v-list-item v-for="(item, i) in boxOffice.dailyBoxOfficeList" :key="i">
                 <v-list-item-icon>
                   <v-icon>{{ item.rank }}</v-icon>
-                  <span style="margin-left: 20px" :style="rankColor(item.rankInten)">{{
-                    item.rankInten
-                  }}</span>
+                  <span style="margin-left: 20px" :style="rankColor(item.rankInten)">
+                    <v-icon x-small :style="rankColor(item.rankInten)">{{
+                      rankIntenIcon(item.rankInten)
+                    }}</v-icon
+                    >{{ item.rankInten.replace('-', '') }}</span
+                  >
                 </v-list-item-icon>
 
                 <v-list-item-content>
@@ -75,6 +78,20 @@ export default {
           color = 'black'
         }
         return `color:${color}`
+      }
+    },
+    rankIntenIcon() {
+      return (val) => {
+        let icon = ''
+        val = parseInt(val)
+        if (val === 0) {
+          icon = 'mdi-minus'
+        } else if (val > 0) {
+          icon = 'mdi-arrow-up-bold'
+        } else {
+          icon = 'mdi-arrow-down-bold'
+        }
+        return icon
       }
     }
   },
