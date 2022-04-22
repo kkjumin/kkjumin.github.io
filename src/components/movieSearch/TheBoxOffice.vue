@@ -6,7 +6,7 @@
         <v-card class="mx-auto" max-width="400" tile>
           <v-list rounded>
             <v-subheader
-              ><v-icon small style="color: #ff6347">mdi-star</v-icon>{{ boxOffice.boxofficeType }}
+              ><v-icon small style="color: #ff6347">mdi-star</v-icon>오늘의 박스오피스
               <v-btn @click="openSettingPopup()" x-small style="position: absolute; right: 20px"
                 ><v-icon x-small>mdi-cog</v-icon></v-btn
               ></v-subheader
