@@ -76,55 +76,9 @@
             <v-row dense>
               <template v-for="(movie, i) in movies.items">
                 <v-col :key="i" :cols="flexibleCols">
-                  <v-card class="mx-auto my-12" max-width="200">
-                    <template slot="progress">
-                      <v-progress-linear
-                        color="deep-purple"
-                        height="10"
-                        indeterminate
-                      ></v-progress-linear>
-                    </template>
-
-                    <v-img height="200" :src="movie.image ? movie.image : noImage">
-                      <div class="blackBack" @click="goDetail(movie.link)">
-                        <v-icon
-                          color="#fff"
-                          x-large
-                          style="top: 50%; left: 50%; transform: translate(-50%, -50%)"
-                          >mdi-magnify-scan</v-icon
-                        >
-                      </div>
-                    </v-img>
-                    <v-divider></v-divider>
-                    <v-card-title
-                      class="ell"
-                      style="font-size: 0.9rem; line-height: 2rem; height: 88px"
-                      v-html="movie.title"
-                    ></v-card-title>
-
-                    <v-divider></v-divider>
-                    <v-card-text>
-                      <v-row align="center" class="mx-0">
-                        <v-rating
-                          :value="starToFixed(movie.userRating)"
-                          color="amber"
-                          dense
-                          half-increments
-                          readonly
-                          size="14"
-                        ></v-rating>
-
-                        <div class="grey--text ms-4">{{ starToFixed(movie.userRating) }}</div>
-                      </v-row>
-
-                      <div
-                        class="my-4 text-subtitle-1 ell"
-                        style="font-size: 0.9rem !important; height: 60px"
-                      >
-                        <span v-if="movie.director">감독 :</span> {{ deleteText(movie.director) }}
-                      </div>
-                    </v-card-text>
-                  </v-card>
+                  <!-- 영화 컴포넌트 -->
+                  <movie-content :movie="movie" />
+                  <!-- 영화 컴포넌트 end-->
                 </v-col>
               </template>
 
@@ -166,8 +120,9 @@
 import { DISPATCH_SEARCH_MOV } from '@/store/types'
 import { mapActions, mapState } from 'vuex'
 import TheBoxOffice from '@/components/movieSearch/TheBoxOffice.vue'
+import MovieContent from '@/components/movieSearch/MovieContent.vue'
 export default {
-  components: { TheBoxOffice },
+  components: { TheBoxOffice, MovieContent },
   name: 'SearchMovie',
   data: () => ({
     page: 1,
@@ -205,31 +160,27 @@ export default {
   computed: {
     ...mapState({
       movies: (state) => state.movies,
-      isLoading: (state) => state.isLoading
+      isLoading: (state) => state.isLoading,
+      display: (state) => state.display
     }),
-    starToFixed() {
-      return (starVal) => {
-        let halfVal = parseFloat(starVal) / 2
-        return parseFloat(halfVal.toFixed(1))
-      }
-    },
+
     activeGenre() {
       return (genreKey) => {
         return genreKey === this.selectedGenre ? 'primary' : ''
       }
     },
-    noImage() {
-      return require('../assets/images/noImg.png')
-    },
+
     flexibleCols() {
       let cols = 6
-      if (this.screenWidth > 1024) {
+      if (this.screenWidth > 1600) {
+        cols = 1
+      } else if (this.screenWidth <= 1600 && this.screenWidth > 1100) {
         cols = 2
-      } else if (this.screenWidth <= 1024 && this.screenWidth > 960) {
+      } else if (this.screenWidth <= 1100 && this.screenWidth > 800) {
         cols = 3
-      } else if (this.screenWidth <= 960 && this.screenWidth > 500) {
+      } else if (this.screenWidth <= 800 && this.screenWidth > 620) {
         cols = 4
-      } else if (this.screenWidth <= 500) {
+      } else if (this.screenWidth <= 620) {
         cols = 6
       }
       return cols
@@ -238,7 +189,7 @@ export default {
       return this.movies.total
     },
     totalPage() {
-      let totalPage = Math.ceil(this.totalCount / 12)
+      let totalPage = Math.ceil(this.totalCount / this.display)
       return totalPage
     },
     currentLength() {
@@ -265,7 +216,7 @@ export default {
 
         this.dispatchSearchAction({
           query: this.keyword,
-          display: 12,
+          display: this.display,
           start: this.start,
           page: this.page,
           genre: this.selectedGenre === 99 ? '' : this.selectedGenre
@@ -306,25 +257,22 @@ export default {
       this.searchAction()
       this.selectedItem = keyword
     },
-    deleteText(text) {
-      let reg = /.$/
-      return text.replace(reg, '')
-    },
+
     clickGenre(key) {
       this.selectedGenre = key
       this.initPage()
 
       this.dispatchSearchAction({
         query: this.keyword,
-        display: 12,
+        display: this.display,
         genre: this.selectedGenre === 99 ? '' : this.selectedGenre
       })
 
       sessionStorage.genre = key
     },
     paging(page) {
-      this.start = 1 * (12 * (page - 1)) + 1
-      this.dispatchSearchAction({ query: this.keyword, display: 12, start: this.start })
+      this.start = 1 * (this.display * (page - 1)) + 1
+      this.dispatchSearchAction({ query: this.keyword, display: this.display, start: this.start })
       sessionStorage.start = this.start
       sessionStorage.page = page
     },
@@ -334,11 +282,7 @@ export default {
       sessionStorage.page = 1
       sessionStorage.start = 1
     },
-    goDetail(url) {
-      if (url) {
-        window.open(url, '_blank')
-      }
-    },
+
     outSideClick() {
       this.focus = false
     },
@@ -387,7 +331,8 @@ li {
   z-index: 2;
   display: block;
   border: 1px solid #eee;
-  width: 400px;
+  width: 80%;
+  max-width: 400px;
   left: 50%;
   transform: translateX(-50%);
   border-radius: 5px;
@@ -406,7 +351,8 @@ li {
 }
 
 .v-image__image--cover {
-  background-size: contain;
+  background-size: cover;
+  border-radius: 20px 20px 0px 0px;
 }
 .blackBack {
   width: 100%;

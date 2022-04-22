@@ -19,6 +19,7 @@ export default new Vuex.Store({
     sideMenuShow: false,
     movies: {},
     isLoading: false,
+    display: 12,
 
     // 박스오피스관련
     boxOffice: {},
@@ -48,11 +49,12 @@ export default new Vuex.Store({
   },
   actions: {
     // eslint-disable-next-line no-empty-pattern
-    [DISPATCH_SEARCH_MOV]: async ({ commit }, payload) => {
+    [DISPATCH_SEARCH_MOV]: async ({ commit, state }, payload) => {
       commit(SET_IS_LOADING, true)
       let mov
       const url = '/api/search'
-      const { query, display, start, genre, country, yearform, yearto } = payload
+      const { query, start, genre, country, yearform, yearto } = payload
+      const { display } = state
       try {
         const { data } = await axios.get(url, {
           params: { query, display, start, genre, country, yearform, yearto }
