@@ -117,10 +117,12 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import { DISPATCH_SEARCH_MOV } from '@/store/types'
 import { mapActions, mapState } from 'vuex'
 import TheBoxOffice from '@/components/movieSearch/TheBoxOffice.vue'
 import MovieContent from '@/components/movieSearch/MovieContent.vue'
+
 export default {
   components: { TheBoxOffice, MovieContent },
   name: 'SearchMovie',
@@ -206,13 +208,15 @@ export default {
     ...mapActions({
       dispatchSearchAction: DISPATCH_SEARCH_MOV
     }),
-    searchButtonClick() {
+
+    searchButtonClick: _.throttle(function () {
+      console.log('test')
       sessionStorage.page = 1
       sessionStorage.start = 1
       this.page = 1
       this.start = 1
       this.searchAction()
-    },
+    }, 500),
 
     searchAction() {
       if (this.keyword !== '') {
