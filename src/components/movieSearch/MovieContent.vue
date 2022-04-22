@@ -14,13 +14,13 @@
     <v-divider></v-divider>
     <v-card-title
       class="ell"
-      style="font-size: 0.9rem; line-height: 2rem; height: 88px"
+      style="font-size: 0.9rem; line-height: 2rem; height: 82px"
       v-html="movie.title"
     ></v-card-title>
 
     <v-divider></v-divider>
     <v-card-text>
-      <v-row align="center" class="mx-0">
+      <v-row align="center" class="mx-0" style="margin-top: 0">
         <v-rating
           :value="starToFixed(movie.userRating) / 2"
           color="amber"
@@ -68,4 +68,9 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+.v-card__text,
+.v-card__title {
+  padding: 10px 10px 10px 10px;
+}
+</style>
