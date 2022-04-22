@@ -2,11 +2,11 @@
 node_modules
 /dist
 .env
-.git*
 vue.config.js
-yarn.lock
+babel.config.js
+jsconfig.json
 package-lock.json
-
+yarn.lock
 
 # local env files
 .env.local
