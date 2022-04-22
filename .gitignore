@@ -3,6 +3,9 @@ node_modules
 /dist
 .env
 .git*
+vue.config.js
+babel.config.js
+jsconfig.json
 
 
 # local env files
