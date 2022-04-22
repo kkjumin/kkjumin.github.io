@@ -7,11 +7,11 @@ export const getScrollEvent = {
   }),
   mounted() {
     this.handleDebouncedScroll = debounce(this.scrollEvent, 1)
-    document.getElementById('app').addEventListener('scroll', this.handleDebouncedScroll)
+    window.addEventListener('scroll', this.handleDebouncedScroll)
     window.addEventListener('resize', this.getScreenWidth)
   },
   beforeDestroy() {
-    document.getElementById('app').removeEventListener('scroll', this.handleDebouncedScroll)
+    window.removeEventListener('scroll', this.handleDebouncedScroll)
     window.removeEventListener('resize', this.getScreenWidth)
   },
   computed: {
@@ -24,7 +24,7 @@ export const getScrollEvent = {
   },
   methods: {
     scrollEvent() {
-      let scrollY = document.getElementById('app').scrollTop
+      let scrollY = window.scrollY
       this.currentScroll = scrollY
     },
     getScreenWidth() {

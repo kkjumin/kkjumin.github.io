@@ -3,7 +3,9 @@
     <!-- 툴바 -->
     <v-toolbar elevation="4">
       <v-app-bar-nav-icon @click="setMenuToggle"></v-app-bar-nav-icon>
-      <h1 style="margin: 0 auto"></h1>
+      <h2 style="margin: 0 auto">
+        <v-icon @click="goTo('home')">MOVIE SEARCH</v-icon>
+      </h2>
     </v-toolbar>
   </header>
 </template>

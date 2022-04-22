@@ -2,11 +2,11 @@
   <!-- 사이드메뉴 -->
   <v-navigation-drawer v-model="toggle" absolute temporary>
     <!-- 프로필 아이콘 -->
-    <v-list-item>
+    <!-- <v-list-item>
       <v-list-item-avatar width="200" height="200" style="margin: 20px 0px 0px 15px">
         <v-img height="200" src="https://randomuser.me/api/portraits/men/78.jpg"></v-img>
       </v-list-item-avatar>
-    </v-list-item>
+    </v-list-item> -->
 
     <!-- 프로필 리스트 -->
     <v-list dense>
@@ -61,7 +61,7 @@ export default {
     },
     menuList: [
       // { title: '홈', icon: 'mdi-view-dashboard', path: 'home' },
-      { title: '영화검색', icon: 'mdi-movie', path: 'movieSearch' }
+      { title: '영화검색', icon: 'mdi-movie', path: 'movieSearchDefault' }
     ]
   }),
   computed: {

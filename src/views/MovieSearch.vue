@@ -13,16 +13,8 @@
         <button class="searchBtn" @click="searchAction()">검색</button>
       </div>
 
-      <div v-if="!isMobile" class="genreArea">
-        <div class="genreButton" v-for="genre in genreList" :key="genre.key">
-          <v-btn :color="activeGenre(genre.key)" elevation="2" @click="clickGenre(genre.key)">{{
-            genre.desc
-          }}</v-btn>
-        </div>
-      </div>
-
       <!-- 최근검색어 -->
-      <div v-if="focus" class="recentKeywordArea">
+      <div v-if="focus" class="recentKeywordArea" v-click-outside="outSideClick">
         <v-list>
           <v-list-item-group>
             <v-list-item
@@ -42,103 +34,120 @@
         </v-list>
       </div>
 
-      <!-- 영화 리스트 -->
-      <div class="movieListArea">
-        <v-container fluid>
-          <div class="countArea">
-            검색결과 총 <span style="color: #ff6600">{{ totalCount }}</span
-            >건 중 <span style="color: #ff6600">{{ currentLength }}</span
-            >건
+      <template v-if="!routeKeywordParams">
+        <the-box-office @keyword-search="clickRecentKeyword" />
+      </template>
+
+      <template v-if="routeKeywordParams">
+        <div v-if="!isMobile" class="genreArea">
+          <div class="genreButton" v-for="genre in genreList" :key="genre.key">
+            <v-btn :color="activeGenre(genre.key)" elevation="2" @click="clickGenre(genre.key)">{{
+              genre.desc
+            }}</v-btn>
           </div>
-          <v-row dense>
-            <template v-for="(movie, i) in movies.items">
-              <v-col :key="i" :cols="flexibleCols">
-                <v-card class="mx-auto my-12" max-width="200">
-                  <template slot="progress">
-                    <v-progress-linear
-                      color="deep-purple"
-                      height="10"
-                      indeterminate
-                    ></v-progress-linear>
-                  </template>
+        </div>
 
-                  <v-img height="200" :src="movie.image ? movie.image : noImage">
-                    <div class="blackBack" @click="goDetail(movie.link)">
-                      <v-icon
-                        color="#fff"
-                        x-large
-                        style="top: 50%; left: 50%; transform: translate(-50%, -50%)"
-                        >mdi-magnify-scan</v-icon
+        <!-- 영화 리스트 -->
+        <div class="movieListArea">
+          <v-container fluid>
+            <div class="countArea">
+              Page {{ page }}/{{ totalPage === 0 ? 1 : totalPage }}
+              검색결과 총
+              <span style="color: #ff6600">{{ totalCount }}</span
+              >건
+            </div>
+            <v-row dense>
+              <template v-for="(movie, i) in movies.items">
+                <v-col :key="i" :cols="flexibleCols">
+                  <v-card class="mx-auto my-12" max-width="200">
+                    <template slot="progress">
+                      <v-progress-linear
+                        color="deep-purple"
+                        height="10"
+                        indeterminate
+                      ></v-progress-linear>
+                    </template>
+
+                    <v-img height="200" :src="movie.image ? movie.image : noImage">
+                      <div class="blackBack" @click="goDetail(movie.link)">
+                        <v-icon
+                          color="#fff"
+                          x-large
+                          style="top: 50%; left: 50%; transform: translate(-50%, -50%)"
+                          >mdi-magnify-scan</v-icon
+                        >
+                      </div>
+                    </v-img>
+                    <v-divider></v-divider>
+                    <v-card-title
+                      class="ell"
+                      style="font-size: 0.9rem; line-height: 2rem; height: 88px"
+                      v-html="movie.title"
+                    ></v-card-title>
+
+                    <v-divider></v-divider>
+                    <v-card-text>
+                      <v-row align="center" class="mx-0">
+                        <v-rating
+                          :value="starToFixed(movie.userRating)"
+                          color="amber"
+                          dense
+                          half-increments
+                          readonly
+                          size="14"
+                        ></v-rating>
+
+                        <div class="grey--text ms-4">{{ starToFixed(movie.userRating) }}</div>
+                      </v-row>
+
+                      <div
+                        class="my-4 text-subtitle-1 ell"
+                        style="font-size: 0.9rem !important; height: 60px"
                       >
-                    </div>
-                  </v-img>
-                  <v-divider></v-divider>
-                  <v-card-title
-                    class="ell"
-                    style="font-size: 0.9rem; line-height: 2rem; height: 88px"
-                    v-html="movie.title"
-                  ></v-card-title>
+                        <span v-if="movie.director">감독 :</span> {{ deleteText(movie.director) }}
+                      </div>
+                    </v-card-text>
+                  </v-card>
+                </v-col>
+              </template>
 
-                  <v-divider></v-divider>
-                  <v-card-text>
-                    <v-row align="center" class="mx-0">
-                      <v-rating
-                        :value="starToFixed(movie.userRating)"
-                        color="amber"
-                        dense
-                        half-increments
-                        readonly
-                        size="14"
-                      ></v-rating>
+              <template
+                ><v-col v-if="_.isEmpty(movies.items) && !isLoading">
+                  <p class="resultEmpty">검색결과가 없습니다.</p>
+                </v-col>
+              </template>
 
-                      <div class="grey--text ms-4">{{ starToFixed(movie.userRating) }}</div>
-                    </v-row>
+              <template>
+                <v-col v-if="_.isEmpty(movies.items) && isLoading">
+                  <p class="resultEmpty">
+                    <v-progress-circular indeterminate color="primary"></v-progress-circular>
+                  </p>
+                </v-col>
+              </template>
+            </v-row>
+          </v-container>
+        </div>
 
-                    <div
-                      class="my-4 text-subtitle-1 ell"
-                      style="font-size: 0.9rem !important; height: 60px"
-                    >
-                      <span v-if="movie.director">감독 :</span> {{ deleteText(movie.director) }}
-                    </div>
-                  </v-card-text>
-                </v-card>
-              </v-col>
-            </template>
-
-            <template
-              ><v-col v-if="_.isEmpty(movies.items) && !isLoading">
-                <p class="resultEmpty">검색결과가 없습니다.</p>
-              </v-col>
-            </template>
-
-            <template>
-              <v-col v-if="_.isEmpty(movies.items) && isLoading">
-                <p class="resultEmpty">
-                  <v-progress-circular indeterminate color="primary"></v-progress-circular>
-                </p>
-              </v-col>
-            </template>
-          </v-row>
-        </v-container>
-      </div>
-
-      <div class="text-center">
-        <v-pagination
-          v-model="page"
-          :length="totalPage || 1"
-          circle
-          :total-visible="7"
-          @input="paging"
-        ></v-pagination>
-      </div>
+        <div class="text-center">
+          <v-pagination
+            v-model="page"
+            :length="totalPage || 1"
+            circle
+            :total-visible="7"
+            @input="paging"
+          ></v-pagination>
+        </div>
+      </template>
     </section>
   </div>
 </template>
 
 <script>
-import { DEPATCH_SEARCH_MOV } from '@/store/types'
+import { DISPATCH_SEARCH_MOV } from '@/store/types'
 import { mapActions, mapState } from 'vuex'
+import TheBoxOffice from '@/components/movieSearch/TheBoxOffice.vue'
 export default {
+  components: { TheBoxOffice },
   name: 'SearchMovie',
   data: () => ({
     page: 1,
@@ -214,6 +223,9 @@ export default {
     },
     currentLength() {
       return this.movies?.items?.length
+    },
+    routeKeywordParams() {
+      return this.$route.params.keyword
     }
   },
   created() {
@@ -221,33 +233,35 @@ export default {
   },
   methods: {
     ...mapActions({
-      dispatchSearchAction: DEPATCH_SEARCH_MOV
+      dispatchSearchAction: DISPATCH_SEARCH_MOV
     }),
     searchAction() {
-      if (this.keyword === '') return alert('키워드를 입력 해주세요')
-      console.log(this.keyword)
-      this.dispatchSearchAction({
-        query: this.keyword,
-        display: 12,
-        start: this.start,
-        page: this.page,
-        genre: this.selectedGenre === 99 ? '' : this.selectedGenre
-      })
-      if (this.recentKeyword.length >= 5) {
-        this.recentKeyword.splice(4, 1)
-      }
-      this.recentKeyword.splice(0, 0, this.keyword)
-      this.focus = false
+      if (this.keyword !== '') {
+        if (this.$route.name === 'movieSearchDefault') {
+          this.$router.push({ name: 'movieSearch', params: { keyword: this.keyword } })
+        } else {
+          this.$router.push({ params: { keyword: this.keyword } })
+        }
 
-      sessionStorage.recentKeyword = JSON.stringify(this.recentKeyword)
-      sessionStorage.lastKeyword = this.keyword
+        this.dispatchSearchAction({
+          query: this.keyword,
+          display: 12,
+          start: this.start,
+          page: this.page,
+          genre: this.selectedGenre === 99 ? '' : this.selectedGenre
+        })
+        if (this.recentKeyword.length >= 5) {
+          this.recentKeyword.splice(4, 1)
+        }
+        this.recentKeyword.splice(0, 0, this.keyword)
+        this.focus = false
+
+        sessionStorage.recentKeyword = JSON.stringify(this.recentKeyword)
+      }
     },
     init() {
       if (sessionStorage.recentKeyword) {
         this.recentKeyword = JSON.parse(sessionStorage.recentKeyword)
-      }
-      if (sessionStorage.lastKeyword) {
-        this.keyword = sessionStorage.lastKeyword
       }
       if (sessionStorage.page) {
         this.page = parseInt(sessionStorage.page)
@@ -258,8 +272,12 @@ export default {
       if (sessionStorage.genre) {
         this.selectedGenre = parseInt(sessionStorage.genre)
       }
-
-      this.searchAction()
+      if (this.routeKeywordParams) {
+        this.keyword = this.routeKeywordParams
+        this.searchAction()
+      } else {
+        this.keyword = ''
+      }
     },
     clickRecentKeyword(keyword) {
       this.focus = false
@@ -299,6 +317,9 @@ export default {
       if (url) {
         window.open(url, '_blank')
       }
+    },
+    outSideClick() {
+      this.focus = false
     }
   }
 }

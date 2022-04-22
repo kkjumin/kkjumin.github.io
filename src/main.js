@@ -5,12 +5,15 @@ import store from './store'
 import vuetify from './plugins/vuetify'
 import VueLodash from 'vue-lodash'
 import lodash from 'lodash'
-import { getScrollEvent } from './mixins'
+import { getScrollEvent, goTo } from './mixins'
+import moment from 'vue-moment'
 
 Vue.config.productionTip = false
 Vue.use(VueLodash, { name: 'custom', lodash: lodash })
+Vue.use(moment)
 
 Vue.mixin(getScrollEvent)
+Vue.mixin(goTo)
 new Vue({
   router,
   store,
