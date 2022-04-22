@@ -19,15 +19,11 @@
       <div v-if="focus" class="recentKeywordArea" v-click-outside="outSideClick">
         <v-list>
           <v-list-item-group>
-            <v-list-item
-              v-for="(keyword, i) in recentKeyword"
-              :key="i"
-              @click="clickRecentKeyword(keyword)"
-            >
-              <v-list-item-content>
+            <v-list-item v-for="(keyword, i) in recentKeyword" :key="i">
+              <v-list-item-content @click="clickRecentKeyword(keyword)">
                 <v-list-item-title v-text="keyword"></v-list-item-title>
               </v-list-item-content>
-              <v-list-item-icon>
+              <v-list-item-icon @click="recentKeywordDelete(i)">
                 <v-icon v-text="`mdi-close-circle`"></v-icon>
               </v-list-item-icon>
             </v-list-item>
@@ -350,6 +346,11 @@ export default {
       sessionStorage.removeItem('page')
       sessionStorage.removeItem('genre')
       sessionStorage.removeItem('start')
+    },
+    recentKeywordDelete(i) {
+      console.log(i)
+      this.recentKeyword.splice(i, 1)
+      sessionStorage.recentKeyword = JSON.stringify(this.recentKeyword)
     }
   }
 }
