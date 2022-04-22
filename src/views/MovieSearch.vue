@@ -348,7 +348,6 @@ export default {
       sessionStorage.removeItem('start')
     },
     recentKeywordDelete(i) {
-      console.log(i)
       this.recentKeyword.splice(i, 1)
       sessionStorage.recentKeyword = JSON.stringify(this.recentKeyword)
     }

@@ -81,10 +81,7 @@ export default {
   methods: {
     ...mapMutations({
       setMenuToggle: SET_MENU_TOGGLE
-    }),
-    goTo(val) {
-      this.$router.push({ name: val })
-    }
+    })
   }
 }
 </script>

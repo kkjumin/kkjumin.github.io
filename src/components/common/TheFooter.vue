@@ -39,7 +39,6 @@ export default {
   }),
   methods: {
     goLink(link) {
-      console.log('link', link)
       window.open(link)
     }
   }

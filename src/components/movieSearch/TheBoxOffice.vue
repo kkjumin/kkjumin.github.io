@@ -51,17 +51,9 @@
 <script>
 import { DISPATCH_TODAY_BOX_OFFICE, SET_BOX_OFFICE_SETTING_POPUP } from '@/store/types'
 import { mapActions, mapMutations, mapState } from 'vuex'
+import moment from 'moment'
 export default {
-  data: () => ({
-    alignments: ['start', 'center', 'end'],
-    items: [
-      { text: 'Real-Time', icon: 'mdi-clock' },
-      { text: 'Audience', icon: 'mdi-account' },
-      { text: 'Conversions', icon: 'mdi-flag' },
-      { text: 'Conversions', icon: 'mdi-flag' },
-      { text: 'Conversions', icon: 'mdi-flag' }
-    ]
-  }),
+  data: () => ({}),
   created() {
     this.init()
   },
@@ -97,6 +89,11 @@ export default {
         }
         return icon
       }
+    },
+    statisticsDate() {
+      let date = new Date()
+      date.setDate(date.getDate() - 1)
+      return moment(date).format('YYYYMMDD')
     }
   },
   methods: {
@@ -110,7 +107,6 @@ export default {
       this.dispatchTodayBoxOffice()
     },
     openSettingPopup() {
-      console.log('팝업열기')
       this.settingPopupToggle(true)
     },
     keywordSearch(keyword) {

@@ -1,11 +1,12 @@
 <template>
   <div>
-    <h1>Home</h1>
+    <h1>test</h1>
   </div>
 </template>
 
 <script>
+// import moment from 'moment'
 export default {
-  name: 'HomeView'
+  computed: {}
 }
 </script>

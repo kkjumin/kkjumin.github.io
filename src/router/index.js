@@ -9,7 +9,7 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: () => import('../views/HomeView.vue'),
+    component: () => import('../views/DevTest.vue'),
     meta: { depth01: 'Home', depth02: '', depth03: '' },
     redirect: { name: 'movieSearchDefault' }
   },
@@ -24,6 +24,12 @@ const routes = [
     name: 'movieSearch',
     component: () => import('../views/MovieSearch.vue'),
     meta: { depth01: 'movieSearch', depth02: '', depth03: '' }
+  },
+  {
+    path: '/devTest',
+    name: 'devTest',
+    component: () => import('../views/DevTest.vue'),
+    meta: { depth01: 'devTest', depth02: '', depth03: '' }
   }
 ]
 
