@@ -67,12 +67,12 @@ export default new Vuex.Store({
       return mov
     },
 
-    [DISPATCH_TODAY_BOX_OFFICE]: async ({ commit, state }) => {
+    [DISPATCH_TODAY_BOX_OFFICE]: async ({ commit, state }, payload) => {
       commit(SET_IS_LOADING, true)
       let boxOffice
       const url = '/api/boxOffice'
       const { repNationCd } = state
-      const targetDt = '20220421'
+      const { targetDt } = payload
 
       try {
         const { data } = await axios.get(url, {

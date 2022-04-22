@@ -5,12 +5,18 @@
       <v-col style="margin: 20px 0 0 0">
         <v-card class="mx-auto" max-width="400" tile>
           <v-list rounded>
-            <v-subheader
-              ><v-icon small style="color: #ff6347">mdi-star</v-icon>오늘의 박스오피스
-              <v-btn @click="openSettingPopup()" x-small style="position: absolute; right: 20px"
-                ><v-icon x-small>mdi-cog</v-icon></v-btn
-              ></v-subheader
-            >
+            <v-subheader>
+              <v-tooltip bottom color="primary">
+                <template v-slot:activator="{ on, attrs }">
+                  <v-icon small style="color: #ff6347">mdi-star</v-icon>
+                  <span v-bind="attrs" v-on="on">오늘의 박스오피스</span>
+                </template>
+                <span>전일 {{ statisticsDate }} 기준 입니다</span>
+              </v-tooltip>
+              <v-btn @click="openSettingPopup()" x-small style="position: absolute; right: 20px">
+                <v-icon x-small>mdi-cog</v-icon></v-btn
+              >
+            </v-subheader>
             <v-list-item-group v-if="isLoading" color="primary" style="min-height: 50px">
               <v-progress-circular indeterminate color="primary"></v-progress-circular>
             </v-list-item-group>
@@ -104,7 +110,7 @@ export default {
       settingPopupToggle: SET_BOX_OFFICE_SETTING_POPUP
     }),
     init() {
-      this.dispatchTodayBoxOffice()
+      this.dispatchTodayBoxOffice({ targetDt: this.statisticsDate })
     },
     openSettingPopup() {
       this.settingPopupToggle(true)
