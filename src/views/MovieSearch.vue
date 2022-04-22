@@ -364,17 +364,18 @@ li {
   margin-top: 30px;
 }
 .searchInput {
-  border: 1px solid #000;
-  border-radius: 5px;
+  border: 2px solid #000;
+  border-radius: 15px;
   width: calc(100% - 90px);
   height: 50px;
   padding-left: 10px;
   max-width: 315px;
+  display: inline-block;
 }
 .searchBtn {
   height: 50px;
   background: #000;
-  border-radius: 5px;
+  border-radius: 15px;
   width: 80px;
   margin-left: 5px;
   color: #fff;
