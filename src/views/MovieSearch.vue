@@ -8,10 +8,10 @@
           class="searchInput"
           type="text"
           placeholder="키워드를 입력하세요"
-          @keyup.enter="searchAction()"
+          @keyup.enter="searchButtonClick()"
           @click="focus = !focus"
         />
-        <button class="searchBtn" @click="searchAction()">검색</button>
+        <button class="searchBtn" @click="searchButtonClick()">검색</button>
       </div>
       <!-- 검색영역 end -->
 
@@ -206,6 +206,14 @@ export default {
     ...mapActions({
       dispatchSearchAction: DISPATCH_SEARCH_MOV
     }),
+    searchButtonClick() {
+      sessionStorage.page = 1
+      sessionStorage.start = 1
+      this.page = 1
+      this.start = 1
+      this.searchAction()
+    },
+
     searchAction() {
       if (this.keyword !== '') {
         if (this.$route.name === 'movieSearchDefault') {
