@@ -14,8 +14,13 @@
             <v-list-item-group v-if="isLoading" color="primary" style="min-height: 50px">
               <v-progress-circular indeterminate color="primary"></v-progress-circular>
             </v-list-item-group>
+
             <v-list-item-group v-if="!isLoading" color="primary">
-              <v-list-item v-for="(item, i) in boxOffice.dailyBoxOfficeList" :key="i">
+              <v-list-item
+                v-for="(item, i) in boxOffice.dailyBoxOfficeList"
+                :key="i"
+                @click="keywordSearch(item.movieNm)"
+              >
                 <v-list-item-icon>
                   <v-icon>{{ item.rank }}</v-icon>
                   <span style="margin-left: 20px" :style="rankColor(item.rankInten)">
@@ -30,7 +35,6 @@
                   <v-list-item-title
                     v-text="item.movieNm"
                     style="text-align: left"
-                    @click="keywordSearch(item.movieNm)"
                   ></v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
