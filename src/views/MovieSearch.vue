@@ -210,7 +210,6 @@ export default {
     }),
 
     searchButtonClick: _.throttle(function () {
-      console.log('test')
       sessionStorage.page = 1
       sessionStorage.start = 1
       this.page = 1

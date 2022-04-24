@@ -1,3 +1,2 @@
-export default (to) => {
-  console.log(to)
-}
+// eslint-disable-next-line no-unused-vars
+export default (to) => {}
